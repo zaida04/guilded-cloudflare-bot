@@ -1,7 +1,6 @@
 import { Router } from '8track';
 import { WSChatMessageCreatedPayload, WSEvent } from '@guildedjs/guilded-api-typings';
 import { API } from './api';
-import { makeRequest } from './util';
 const router = new Router();
 
 // All the different response types between this bot and the sending server
@@ -29,12 +28,10 @@ router.post`/bot`.handle(async (ctx) => {
         // PING requests, must respond in order to indicate to server that connection with ws should be kept alive
         case 0: {
             return ctx.json({ type: ResponseTypes.PONG });
-            break;
         }
         // Bot event requests
         case 1: {
             if (event !== 'ChatMessageCreated') return;
-
             // extract message
             const { message } = data;
             // if message created by bot, sent in dms, or doesn't start with prefix, do nothing
