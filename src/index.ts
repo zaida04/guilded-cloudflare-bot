@@ -6,10 +6,10 @@ const router = new Router();
 
 // All the different response types between this bot and the sending server
 enum ResponseTypes {
-    ALIVE = 0,
-    PONG,
+    PONG = 0,
     RESPOND,
     FAILURE,
+    ALIVE,
 }
 
 router.get`/`.handle((ctx) => {
@@ -28,7 +28,7 @@ router.post`/bot`.handle(async (ctx) => {
     switch (type) {
         // PING requests, must respond in order to indicate to server that connection with ws should be kept alive
         case 0: {
-            //  todo: pong
+            return ctx.json({ type: ResponseTypes.PONG });
             break;
         }
         // Bot event requests
